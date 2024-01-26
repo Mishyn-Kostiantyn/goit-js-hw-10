@@ -19,7 +19,7 @@ function showWarningMessage() {
     iziToast.warning({
         color: 'red',
     message: 'Please choose a date in the future',
-    position: 'center',
+    position: 'topCenter',
     });
 }
 function addClassOnCountDownStartButton(className) {

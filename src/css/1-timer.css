@@ -9,6 +9,13 @@ input {
   padding-left: 16px;
   border-radius: 4px;
   border: 1px solid #808080;
+  color: #2e2f42;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.64px;
   transition: border 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 input:focus {

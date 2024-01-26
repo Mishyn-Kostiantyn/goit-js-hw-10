@@ -24,7 +24,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.tasks {
+.task1 {
   font-family: Montserrat, sans-serif;
   font-size: 36px;
   font-style: normal;
@@ -32,6 +32,17 @@
   line-height: 24px; /* 150% */
   letter-spacing: 0.64px;
   text-align: center;
-  margin-bottom: 25px;
-  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-top: 100px;
+}
+.task2 {
+  font-family: Montserrat, sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.64px;
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 350px;
 }
