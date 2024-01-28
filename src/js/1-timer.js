@@ -12,42 +12,44 @@ const ref = {
     };
 let countDownInterval;
 let differ = 0;
+let isActive = false;
 function addLeadingZero(value) {
     return String(value).padStart(2, '0');
-}
+};
 function showWarningMessage() {
     iziToast.warning({
         color: 'red',
     message: 'Please choose a date in the future',
     position: 'topCenter',
     });
+};
+function showErrorMessage() {
+    iziToast.error({
+    title: '',
+    message: 'RESTART THE PAGE TO START NEW COUNTDOWN!',
+    position: 'topCenter',
+});
 }
-function addClassOnCountDownStartButton(className) {
-    ref.countDownStartbutton.classList.add(className);
-    
-}
-function removeClassOnCountDownStartButton(className) {
-    ref.countDownStartbutton.classList.remove(className);
-  }
-
 function onCountDownStartButtonClick() {
     ref.countDownStartbutton.removeEventListener('click', onCountDownStartButtonClick);
-    removeClassOnCountDownStartButton('is-active');
+    ref.countDownStartbutton.classList.remove('is-active');
+    isActive = true;
+    let dif = differ
         countDownInterval = setInterval(() => {
-        differ = differ - 1000;
-        if (differ <= 0) { clearInterval(countDownInterval); }
+         dif = dif - 1000;
+            if (dif <= 0) { clearInterval(countDownInterval); isActive = false; }
         else {
-            fillInTimeFields(differ);
+            fillInTimeFields(dif);
         }
     },1000)
 
-}
+};
 function fillInTimeFields(differ) {
     const { days, hours, minutes, seconds } = convertMs(differ);
-    ref.fieldForDays.textContent = `${days}`;
-    ref.fieldForHours.textContent = `${hours}`;
-    ref.fieldForMinutes.textContent = `${minutes}`;
-    ref.fieldForSeconds.textContent = `${seconds}`;
+    ref.fieldForDays.textContent = `${addLeadingZero(days)}`;
+    ref.fieldForHours.textContent = `${addLeadingZero(hours)}`;
+    ref.fieldForMinutes.textContent = `${addLeadingZero(minutes)}`;
+    ref.fieldForSeconds.textContent = `${addLeadingZero(seconds)}`;
 }
 
 const options = {
@@ -56,21 +58,20 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
     onClose(selectedDates) {
-         if (options.defaultDate < selectedDates[0]) {
-          differ=selectedDates[0]-options.defaultDate;
-          addClassOnCountDownStartButton('is-active');
-          ref.countDownStartbutton.addEventListener('click', onCountDownStartButtonClick);
-          
-      }
-      else {
-          clearInterval(countDownInterval);
-          ref.countDownStartbutton.removeEventListener('click', onCountDownStartButtonClick);
-          removeClassOnCountDownStartButton('is-active')
-          showWarningMessage();
-          fillInTimeFields(0);
-          
-      };
-       },
+        if (options.defaultDate >= selectedDates[0] && !isActive)
+        { 
+        ref.countDownStartbutton.removeEventListener('click', onCountDownStartButtonClick)    
+        ref.countDownStartbutton.classList.remove('is-active');
+        showWarningMessage();
+                };
+        if (options.defaultDate < selectedDates[0] && !isActive) {
+            differ = selectedDates[0] - options.defaultDate;
+        ref.countDownStartbutton.classList.add('is-active');
+            ref.countDownStartbutton.addEventListener('click', onCountDownStartButtonClick);
+        };
+        if (isActive) { showErrorMessage() };
+    },
+    
 };
 
 flatpickr(ref.inputForPickingDate, options);
@@ -80,10 +81,10 @@ function convertMs(ms) {
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
-  const days = addLeadingZero(Math.floor(ms / day));
-  const hours = addLeadingZero(Math.floor((ms % day) / hour));
-  const minutes =addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+  const days = Math.floor(ms / day);
+  const hours = Math.floor((ms % day) / hour);
+  const minutes =Math.floor(((ms % day) % hour) / minute);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
   return { days, hours, minutes, seconds };
 }
 

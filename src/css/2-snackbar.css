@@ -24,6 +24,10 @@
   font-weight: 500;
   line-height: 24px; /* 150% */
   letter-spacing: 0.64px;
+  transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.submit-button:hover {
+  background: #6c8cff;
 }
 fieldset {
   padding: 0px;
@@ -44,11 +48,18 @@ legend {
   margin-left: 28px;
 }
 .delay {
-  width: 360px;
+  width: 344px;
   height: 40px;
   border: 1px solid #808080;
   border-radius: 4px;
   color: #2e2f42;
+  padding-left: 16px;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.64px;
 }
 .radio {
   width: 22px;
