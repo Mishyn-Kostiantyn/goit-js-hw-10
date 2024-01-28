@@ -6,6 +6,7 @@ const notificationForm = {
   delayInput: document.querySelector('input[name="delay"'),
   stateFulFilled: document.querySelector('input[value="fulfilled"]'),
 };
+console.dir(notificationForm.submitForm);
 // Додаємо прослуховувач подій на форму
 notificationForm.submitForm.addEventListener('submit', onFormSubmit);
 // вказуємо що робити при "сабміті" форми
@@ -18,7 +19,7 @@ function onFormSubmit(event) {
     executePromise(state, delay)
     .then(showFulfilledNotification)
     .catch(showRejectNotification);
-    notificationForm.submitForm.reset();
+  setTimeout(() => { notificationForm.submitForm.reset(); }, 1000);
 };
 // Створюємо функцію яка показує повідомлення при вдалому виконанні промісу
 function showFulfilledNotification(delay) {
