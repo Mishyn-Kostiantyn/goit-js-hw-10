@@ -26,7 +26,7 @@ function showWarningMessage() {
 function showErrorMessage() {
     iziToast.error({
     title: '',
-    message: 'RESTART THE PAGE TO START NEW COUNTDOWN!',
+    message: 'RESTART THE PAGE TO START NEW COUNTDOWN! OR WAIT TILL THE END OF CURRENT COUNTDOWN!',
     position: 'topCenter',
 });
 }
