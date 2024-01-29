@@ -9,9 +9,10 @@ const ref = {
     fieldForHours: document.querySelector('span[data-hours]'),
     fieldForMinutes: document.querySelector('span[data-minutes]'),
     fieldForSeconds: document.querySelector('span[data-seconds]'),
-    };
+};
+// ref.countDownStartbutton.setAttribute("desabled","true");
 let countDownInterval;
-let differ = 0;
+let dateInFuture = 0;
 let isActive = false;
 function addLeadingZero(value) {
     return String(value).padStart(2, '0');
@@ -31,10 +32,13 @@ function showErrorMessage() {
 });
 }
 function onCountDownStartButtonClick() {
+    ref.countDownStartbutton.setAttribute("desabled", "true");
     ref.countDownStartbutton.removeEventListener('click', onCountDownStartButtonClick);
     ref.countDownStartbutton.classList.remove('is-active');
     isActive = true;
-    let dif = differ
+    let futureDate = dateInFuture;
+    let dif = futureDate-new Date();
+    console.log(dif);
         countDownInterval = setInterval(() => {
          dif = dif - 1000;
             if (dif <= 0) { clearInterval(countDownInterval); isActive = false; }
@@ -58,22 +62,22 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
     onClose(selectedDates) {
-        if (options.defaultDate >= selectedDates[0] && !isActive)
+        if (new Date() >= selectedDates[0] && !isActive)
         { 
-        ref.countDownStartbutton.removeEventListener('click', onCountDownStartButtonClick)    
+        ref.countDownStartbutton.setAttribute("desabled", "true");    
         ref.countDownStartbutton.classList.remove('is-active');
         showWarningMessage();
                 };
-        if (options.defaultDate < selectedDates[0] && !isActive) {
-            differ = selectedDates[0] - options.defaultDate;
-        ref.countDownStartbutton.classList.add('is-active');
+        if (new Date() < selectedDates[0] && !isActive) {
+            dateInFuture = selectedDates[0];
+            ref.countDownStartbutton.classList.add('is-active');
+            ref.countDownStartbutton.setAttribute("desabled","false")
             ref.countDownStartbutton.addEventListener('click', onCountDownStartButtonClick);
         };
         if (isActive) { showErrorMessage() };
     },
     
 };
-
 flatpickr(ref.inputForPickingDate, options);
 
 function convertMs(ms) {
