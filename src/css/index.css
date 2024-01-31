@@ -44,5 +44,17 @@
   letter-spacing: 0.64px;
   text-align: center;
   margin-bottom: 50px;
-  margin-top: 350px;
+  margin-top: 50px;
+}
+.tasks {
+  display: block;
+  font-family: Montserrat, sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 150% */
+  letter-spacing: 0.64px;
+  text-align: center;
+  text-decoration: underline;
+  color: darkolivegreen;
 }

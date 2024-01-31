@@ -10,10 +10,11 @@ const ref = {
     fieldForMinutes: document.querySelector('span[data-minutes]'),
     fieldForSeconds: document.querySelector('span[data-seconds]'),
 };
-// ref.countDownStartbutton.setAttribute("desabled","true");
+
 let countDownInterval;
 let dateInFuture = 0;
 let isActive = false;
+showConditionInfoMessage()
 function addLeadingZero(value) {
     return String(value).padStart(2, '0');
 };
@@ -24,24 +25,42 @@ function showWarningMessage() {
     position: 'topCenter',
     });
 };
-function showErrorMessage() {
-    iziToast.error({
+function showConditionInfoMessage() {
+    iziToast.info({
+    title: '',
+    message: 'PLEASE, CHOOSE DATE IN THE FUTURE AND THEN PRESS "Start" BUTTON TO START COUNTDOWN',
+        position: 'topCenter',
+    timeout:false,
+});
+}
+function showActiveCountDownInfoMessage() {
+    iziToast.info({
     title: '',
     message: 'RESTART THE PAGE TO START NEW COUNTDOWN! OR WAIT TILL THE END OF CURRENT COUNTDOWN!',
-    position: 'topCenter',
+        position: 'topCenter',
+    timeout:false,
 });
 }
 function onCountDownStartButtonClick() {
-    ref.countDownStartbutton.setAttribute("desabled", "true");
-    ref.countDownStartbutton.removeEventListener('click', onCountDownStartButtonClick);
+    ref.countDownStartbutton.setAttribute("disabled", "true");
+    ref.inputForPickingDate.setAttribute("disabled", "true");
     ref.countDownStartbutton.classList.remove('is-active');
     isActive = true;
+    iziToast.destroy();
+    showActiveCountDownInfoMessage();
     let futureDate = dateInFuture;
     let dif = futureDate-new Date();
     console.log(dif);
-        countDownInterval = setInterval(() => {
-         dif = dif - 1000;
-            if (dif <= 0) { clearInterval(countDownInterval); isActive = false; }
+    countDownInterval = setInterval(() => {
+        dif = dif - 1000;
+            if (dif <= 0) {
+                clearInterval(countDownInterval);
+                isActive = false;
+                ref.inputForPickingDate.removeAttribute("disabled");
+                iziToast.destroy();
+                showConditionInfoMessage();
+
+            }
         else {
             fillInTimeFields(dif);
         }
@@ -64,14 +83,15 @@ const options = {
     onClose(selectedDates) {
         if (new Date() >= selectedDates[0] && !isActive)
         { 
-        ref.countDownStartbutton.setAttribute("desabled", "true");    
-        ref.countDownStartbutton.classList.remove('is-active');
+        ref.countDownStartbutton.setAttribute("disabled", "true");    
+            ref.countDownStartbutton.classList.remove('is-active');
+            iziToast.destroy();
         showWarningMessage();
                 };
         if (new Date() < selectedDates[0] && !isActive) {
             dateInFuture = selectedDates[0];
             ref.countDownStartbutton.classList.add('is-active');
-            ref.countDownStartbutton.setAttribute("desabled","false")
+            ref.countDownStartbutton.removeAttribute("disabled");
             ref.countDownStartbutton.addEventListener('click', onCountDownStartButtonClick);
         };
         if (isActive) { showErrorMessage() };
